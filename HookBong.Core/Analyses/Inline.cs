@@ -25,41 +25,53 @@ namespace HookBong.Core.Analyses
                 var onDiskData = (DataSegment)((VirtualSegment)onDiskSection.Contents).PhysicalContents;
 
                 //this is a ghetto reloc fix but whatever
-                var toSkip = module.Image.Relocations.Select(reloc => reloc.Location.Rva).ToHashSet();
+                var toSkip = new Dictionary<uint, uint>();
+                foreach (var reloc in module.Image.Relocations)
+                    toSkip[reloc.Location.Rva] = (reloc.Type == AsmResolver.PE.Relocations.RelocationType.Dir64 ? 8U : 4U);
 
                 //this is an even more ghetto fix for IAT entries in readonly places
                 foreach (var import in module.Image.Imports)
                 {
                     var dataReader = module.ImageFile.CreateReaderAtRva(import.AddressRva);
 
-                    int c = 0;
+                    uint c = 0;
                     while (dataReader.ReadNativeInt(module.Image.PEKind == OptionalHeaderMagic.Pe32) != 0)
                     {
-                        toSkip.Add(import.AddressRva + (uint)c);
-                        c += 8;
+                        var offs = module.Image.PEKind == OptionalHeaderMagic.Pe32 ? 4U : 8U;
+                        toSkip[import.AddressRva + c] = offs;
+                        c += offs;
                     }
                 }
 
                 //isolate rvas we want
-                toSkip = toSkip.Where(v => section.ContainsRva(v)).Select(v => v - section.Rva).ToHashSet();
+                toSkip = toSkip.Where(v => section.ContainsRva(v.Key)).ToDictionary(kvp => kvp.Key - section.Rva, kvp => kvp.Value);
 
                 //these datatypes make me want to kill myself lol
                 var diffList = new List<Tuple<uint, List<Tuple<byte, byte>>>>();
                 var currDiff = Tuple.Create(0U, new List<Tuple<byte, byte>>());
                 for (uint i = 0; i < section.GetPhysicalSize();)
                 {
-                    //skip reloc delta
-                    if (toSkip.Contains(i)) 
+                    //skip delta
+                    if (toSkip.TryGetValue(i, out var j))
                     {
-                        i += 8;
+                        // handle overlapping cases
+                        while (j != 0)
+                        {
+                            i++;
+                            j--;
+
+                            if (toSkip.TryGetValue(i, out var k))
+                                j = Math.Max(j, k);
+                        }
                         continue;
                     }
-
                     if (onDiskData.Data[i] != inMemoryData.Data[i])
                         currDiff.Item2.Add(Tuple.Create(onDiskData.Data[i], inMemoryData.Data[i]));
-                    else if (currDiff.Item2.Count != 0)
+                    else
                     {
-                        diffList.Add(currDiff);
+                        if (currDiff.Item2.Count != 0)
+                            diffList.Add(currDiff);
+
                         currDiff = Tuple.Create(i, new List<Tuple<byte, byte>>());
                     }
                     i++;

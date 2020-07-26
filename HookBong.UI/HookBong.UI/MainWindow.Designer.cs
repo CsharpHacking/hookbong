@@ -29,18 +29,24 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.Label processListLabel;
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.processList = new System.Windows.Forms.ListBox();
             this.analyzeButton = new System.Windows.Forms.Button();
             this.analysisGrid = new System.Windows.Forms.DataGridView();
+            this.currentProcessLabel = new System.Windows.Forms.Label();
+            this.refreshButton = new System.Windows.Forms.Button();
+            this.SearchBox = new System.Windows.Forms.TextBox();
             this.VirtualAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ModuleName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HookType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OriginalData = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PatchedData = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AdditionalInfo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.currentProcessLabel = new System.Windows.Forms.Label();
-            this.refreshButton = new System.Windows.Forms.Button();
-            this.SearchBox = new System.Windows.Forms.TextBox();
             processListLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.analysisGrid)).BeginInit();
             this.SuspendLayout();
@@ -103,51 +109,6 @@
             this.analysisGrid.Size = new System.Drawing.Size(799, 561);
             this.analysisGrid.TabIndex = 3;
             // 
-            // VirtualAddress
-            // 
-            this.VirtualAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.VirtualAddress.HeaderText = "Virtual Address";
-            this.VirtualAddress.Name = "VirtualAddress";
-            this.VirtualAddress.ReadOnly = true;
-            this.VirtualAddress.Width = 102;
-            // 
-            // ModuleName
-            // 
-            this.ModuleName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ModuleName.HeaderText = "Module Name";
-            this.ModuleName.Name = "ModuleName";
-            this.ModuleName.ReadOnly = true;
-            this.ModuleName.Width = 98;
-            // 
-            // HookType
-            // 
-            this.HookType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.HookType.HeaderText = "HookType";
-            this.HookType.Name = "HookType";
-            this.HookType.ReadOnly = true;
-            this.HookType.Width = 82;
-            // 
-            // OriginalData
-            // 
-            this.OriginalData.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.OriginalData.HeaderText = "Original Data";
-            this.OriginalData.Name = "OriginalData";
-            this.OriginalData.ReadOnly = true;
-            // 
-            // PatchedData
-            // 
-            this.PatchedData.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.PatchedData.HeaderText = "Patched Data";
-            this.PatchedData.Name = "PatchedData";
-            this.PatchedData.ReadOnly = true;
-            // 
-            // AdditionalInfo
-            // 
-            this.AdditionalInfo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.AdditionalInfo.HeaderText = "Additional Information";
-            this.AdditionalInfo.Name = "AdditionalInfo";
-            this.AdditionalInfo.ReadOnly = true;
-            // 
             // currentProcessLabel
             // 
             this.currentProcessLabel.AutoSize = true;
@@ -180,6 +141,63 @@
             this.SearchBox.TabIndex = 6;
             this.SearchBox.TextChanged += new System.EventHandler(this.Searchbox_textChanged);
             // 
+            // VirtualAddress
+            // 
+            this.VirtualAddress.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VirtualAddress.DefaultCellStyle = dataGridViewCellStyle1;
+            this.VirtualAddress.HeaderText = "Virtual Address";
+            this.VirtualAddress.Name = "VirtualAddress";
+            this.VirtualAddress.ReadOnly = true;
+            this.VirtualAddress.Width = 102;
+            // 
+            // ModuleName
+            // 
+            this.ModuleName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ModuleName.DefaultCellStyle = dataGridViewCellStyle2;
+            this.ModuleName.HeaderText = "Module Name";
+            this.ModuleName.Name = "ModuleName";
+            this.ModuleName.ReadOnly = true;
+            this.ModuleName.Width = 98;
+            // 
+            // HookType
+            // 
+            this.HookType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HookType.DefaultCellStyle = dataGridViewCellStyle3;
+            this.HookType.HeaderText = "HookType";
+            this.HookType.Name = "HookType";
+            this.HookType.ReadOnly = true;
+            this.HookType.Width = 82;
+            // 
+            // OriginalData
+            // 
+            this.OriginalData.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OriginalData.DefaultCellStyle = dataGridViewCellStyle4;
+            this.OriginalData.HeaderText = "Original Data";
+            this.OriginalData.Name = "OriginalData";
+            this.OriginalData.ReadOnly = true;
+            // 
+            // PatchedData
+            // 
+            this.PatchedData.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PatchedData.DefaultCellStyle = dataGridViewCellStyle5;
+            this.PatchedData.HeaderText = "Patched Data";
+            this.PatchedData.Name = "PatchedData";
+            this.PatchedData.ReadOnly = true;
+            // 
+            // AdditionalInfo
+            // 
+            this.AdditionalInfo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AdditionalInfo.DefaultCellStyle = dataGridViewCellStyle6;
+            this.AdditionalInfo.HeaderText = "Additional Information";
+            this.AdditionalInfo.Name = "AdditionalInfo";
+            this.AdditionalInfo.ReadOnly = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -207,12 +225,12 @@
         private System.Windows.Forms.DataGridView analysisGrid;
         private System.Windows.Forms.Label currentProcessLabel;
         private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.TextBox SearchBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn VirtualAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn ModuleName;
         private System.Windows.Forms.DataGridViewTextBoxColumn HookType;
         private System.Windows.Forms.DataGridViewTextBoxColumn OriginalData;
         private System.Windows.Forms.DataGridViewTextBoxColumn PatchedData;
         private System.Windows.Forms.DataGridViewTextBoxColumn AdditionalInfo;
-        private System.Windows.Forms.TextBox SearchBox;
     }
 }

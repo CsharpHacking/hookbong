@@ -33,7 +33,8 @@ namespace HookBong.UI
 
         private void refreshButton_Click(object sender, EventArgs e)
         {
-            Processes = Process.GetProcesses().ToList();
+            Processes = Process.GetProcesses().Where(p => p.ProcessName.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+
             processList.Items.Clear();
 
             foreach (var process in Processes)
@@ -51,7 +52,7 @@ namespace HookBong.UI
 
         private void Searchbox_textChanged(object sender, EventArgs e)
         {
-            Processes = Process.GetProcesses().Where(p => p.ProcessName.IndexOf(SearchBox.Text,StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            Processes = Process.GetProcesses().Where(p => p.ProcessName.IndexOf(SearchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
 
             processList.Items.Clear();
             foreach (var process in Processes)
