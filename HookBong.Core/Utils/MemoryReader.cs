@@ -28,14 +28,14 @@ namespace HookBong.Core.Utils
             Synchronize = 0x00100000
         }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
         static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesRead);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
         public static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool bInheritHandle, int processId);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool CloseHandle(IntPtr hObject);
+        [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
+        public static extern bool CloseHandle(IntPtr hObject);
 
         public IntPtr ProcessHandle;
 
