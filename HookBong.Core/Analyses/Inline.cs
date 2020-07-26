@@ -20,6 +20,8 @@ namespace HookBong.Core.Analyses
                     continue;
 
                 var onDiskSection = module.ImageFileOnDisk.GetSectionContainingRva(section.Rva);
+                if (onDiskSection.GetPhysicalSize() == 0)
+                    continue;
 
                 var inMemoryData = (DataSegment)((VirtualSegment)section.Contents).PhysicalContents;
                 var onDiskData = (DataSegment)((VirtualSegment)onDiskSection.Contents).PhysicalContents;
@@ -48,7 +50,7 @@ namespace HookBong.Core.Analyses
 
                 //these datatypes make me want to kill myself lol
                 var diffList = new List<Tuple<uint, List<Tuple<byte, byte>>>>();
-                var currDiff = Tuple.Create(0U, new List<Tuple<byte, byte>>());
+                Tuple<uint, List<Tuple<byte, byte>>> currDiff = null;
 
                 int tolerance = 0;
                 for (uint i = 0; i < section.GetPhysicalSize();)
@@ -71,17 +73,28 @@ namespace HookBong.Core.Analyses
                     if (onDiskData.Data[i] != inMemoryData.Data[i])
                     {
                         tolerance = 4;
+                        if (currDiff == null || currDiff.Item2.Count == 0)
+                            currDiff = Tuple.Create(i, new List<Tuple<byte, byte>>());
                         currDiff.Item2.Add(Tuple.Create(onDiskData.Data[i], inMemoryData.Data[i]));
                     }
                     else if (--tolerance < 0)
-                        currDiff = Tuple.Create(i, new List<Tuple<byte, byte>>());
+                    {
+                        if (currDiff != null && currDiff.Item2.Count != 0)
+                        {
+                            diffList.Add(currDiff);
+                            currDiff = null;
+                        }
+                    }
                     else
                         currDiff.Item2.Add(Tuple.Create(onDiskData.Data[i], inMemoryData.Data[i]));
+
+                    if (tolerance < 0)
+                        tolerance = 0;
 
                     i++;
                 }
 
-                if (currDiff.Item2.Count != 0)
+                if (currDiff != null && currDiff.Item2.Count != 0)
                     diffList.Add(currDiff);
 
                 foreach (var diffEntry in diffList)
@@ -106,27 +119,26 @@ namespace HookBong.Core.Analyses
                     var addr = module.BaseAddress.ToInt64() + section.Rva + diffEntry.Item1;
 
                     //todo: improve this trash ass logic
-                    var set = false;
-                    for (int k = 0; k < 0x20; k++)
-                    {
-                        if (analyzer.EMapper.TryGetEntry((IntPtr)(addr + k), out var val))
-                        {
-                            results.Add(new HookAnalysisResult($"{(addr):X8} ({val.Module.ModuleName}!{val.Symbol.Name}+0x{k:X})", "Inline")
-                            {
-                                ModuleName = module.ModuleName,
-                                OriginalData = originalSb.ToString(),
-                                PatchedData = modifiedSb.ToString(),
-                                AdditionalInfo = ""
-                            });
+                    var closestExport = analyzer.EMapper.Exports
+                        .Where(kvp => kvp.Key.ToInt64() <= addr)
+                        .OrderByDescending(kvp => kvp.Key.ToInt64())
+                        .FirstOrDefault();
 
-                            set = true;
-                            break;
-                        }
-                    }
-
-                    if (!set)
+                    if (closestExport.Key == IntPtr.Zero)
                     {
                         results.Add(new HookAnalysisResult($"{(addr):X8} ({section.Name}!0x{diffEntry.Item1:X})", "Inline")
+                        {
+                            ModuleName = module.ModuleName,
+                            OriginalData = originalSb.ToString(),
+                            PatchedData = modifiedSb.ToString(),
+                            AdditionalInfo = ""
+                        });
+                    }
+                    else
+                    {
+                        var val = closestExport.Value;
+                        var k = addr - closestExport.Key.ToInt64();
+                        results.Add(new HookAnalysisResult($"{(addr):X8} ({val.Module.ModuleName}!{val.Symbol.Name}+0x{k:X})", "Inline")
                         {
                             ModuleName = module.ModuleName,
                             OriginalData = originalSb.ToString(),
