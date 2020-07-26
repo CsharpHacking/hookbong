@@ -40,6 +40,7 @@
             this.AdditionalInfo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.currentProcessLabel = new System.Windows.Forms.Label();
             this.refreshButton = new System.Windows.Forms.Button();
+            this.SearchBox = new System.Windows.Forms.TextBox();
             processListLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.analysisGrid)).BeginInit();
             this.SuspendLayout();
@@ -62,9 +63,9 @@
             this.processList.FormattingEnabled = true;
             this.processList.HorizontalScrollbar = true;
             this.processList.ItemHeight = 20;
-            this.processList.Location = new System.Drawing.Point(12, 44);
+            this.processList.Location = new System.Drawing.Point(13, 70);
             this.processList.Name = "processList";
-            this.processList.Size = new System.Drawing.Size(207, 444);
+            this.processList.Size = new System.Drawing.Size(218, 424);
             this.processList.TabIndex = 0;
             this.processList.SelectedIndexChanged += new System.EventHandler(this.processList_SelectedIndexChanged);
             // 
@@ -73,9 +74,9 @@
             this.analyzeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.analyzeButton.Enabled = false;
             this.analyzeButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.analyzeButton.Location = new System.Drawing.Point(12, 494);
+            this.analyzeButton.Location = new System.Drawing.Point(12, 497);
             this.analyzeButton.Name = "analyzeButton";
-            this.analyzeButton.Size = new System.Drawing.Size(206, 51);
+            this.analyzeButton.Size = new System.Drawing.Size(219, 51);
             this.analyzeButton.TabIndex = 2;
             this.analyzeButton.Text = "Analyze";
             this.analyzeButton.UseVisualStyleBackColor = true;
@@ -163,17 +164,28 @@
             this.refreshButton.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.refreshButton.Location = new System.Drawing.Point(12, 554);
             this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(206, 51);
+            this.refreshButton.Size = new System.Drawing.Size(219, 51);
             this.refreshButton.TabIndex = 5;
             this.refreshButton.Text = "Refresh";
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            // 
+            // SearchBox
+            // 
+            this.SearchBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.SearchBox.Location = new System.Drawing.Point(13, 44);
+            this.SearchBox.Name = "SearchBox";
+            this.SearchBox.Size = new System.Drawing.Size(218, 20);
+            this.SearchBox.TabIndex = 6;
+            this.SearchBox.TextChanged += new System.EventHandler(this.Searchbox_textChanged);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1062, 617);
+            this.Controls.Add(this.SearchBox);
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.currentProcessLabel);
             this.Controls.Add(this.analysisGrid);
@@ -201,5 +213,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn OriginalData;
         private System.Windows.Forms.DataGridViewTextBoxColumn PatchedData;
         private System.Windows.Forms.DataGridViewTextBoxColumn AdditionalInfo;
+        private System.Windows.Forms.TextBox SearchBox;
     }
 }
