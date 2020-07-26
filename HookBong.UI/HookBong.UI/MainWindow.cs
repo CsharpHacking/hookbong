@@ -24,7 +24,6 @@ namespace HookBong.UI
 
         public bool ProcessFilter(Process p)
         {
-            Console.WriteLine(p.ProcessName);
             try
             {
                 var hdl =  MemoryReader.OpenProcess(MemoryReader.ProcessAccessFlags.QueryLimitedInformation, false, p.Id);
