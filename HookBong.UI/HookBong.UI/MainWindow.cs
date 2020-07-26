@@ -51,11 +51,9 @@ namespace HookBong.UI
 
         private void Searchbox_textChanged(object sender, EventArgs e)
         {
-            Processes = Process.GetProcesses().ToList();
-            Processes = Processes.Where(p => p.ProcessName.IndexOf(SearchBox.Text,StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            Processes = Process.GetProcesses().Where(p => p.ProcessName.IndexOf(SearchBox.Text,StringComparison.OrdinalIgnoreCase) >= 0).ToList();
 
             processList.Items.Clear();
-
             foreach (var process in Processes)
                 processList.Items.Add($"{process.ProcessName} [{process.Id}]");
         }
